@@ -7,5 +7,12 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+if not DATABASE_URL:
+	raise RuntimeError(
+		"DATABASE_URL is not set. "
+		"For local dev, create a .env with DATABASE_URL=...; "
+		"for Railway, set the DATABASE_URL variable in the Railway service settings."
+	)
+
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
